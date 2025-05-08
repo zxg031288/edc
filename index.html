@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+    <title>EDC Las Vegas 2025 时间表</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 移动设备适配样式 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 0 10px;
+            }
+            
+            header h1 {
+                font-size: 24px;
+            }
+            
+            header .subtitle {
+                font-size: 14px;
+            }
+            
+            .nav-tabs {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .nav-tabs li {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .nav-tabs a {
+                padding: 8px 5px;
+                font-size: 14px;
+            }
+            
+            .view-options button {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+            
+            .search-container {
+                flex-direction: row;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .time-range {
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .event-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .event-time {
+                margin-bottom: 5px;
+                width: 100%;
+            }
+            
+            .stage-column {
+                min-width: 250px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                max-width: 90%;
+                margin: 10% auto;
+            }
+            
+            .artist-header {
+                flex-direction: column;
+            }
+            
+            .artist-image {
+                width: 120px;
+                height: 120px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+        
+        /* 针对特别小屏幕的额外调整 */
+        @media (max-width: 480px) {
+            .nav-tabs a {
+                font-size: 12px;
+                padding: 8px 3px;
+            }
+            
+            .view-options {
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .view-options button {
+                font-size: 11px;
+                padding: 5px;
+            }
+            
+            #artist-search {
+                width: 70%;
+            }
+            
+            #stage-filter, #time-from, #time-to {
+                font-size: 12px;
+            }
+            
+            .filters span {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景音乐 -->
+    <audio loop id="background-music">
+        <source src="Martin Garrix,Clinton Kane,Alle Farben - Drown (Alle Farben Remix).mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+    
+    <!-- 音乐控制按钮 -->
+    <div class="music-control" id="music-control">
+        <i class="fas fa-play" id="music-icon"></i>
+    </div>
+    
+    <header>
+        <div class="container">
+            <h1>EDC Las Vegas 2025</h1>
+            <p class="subtitle">电音嘉年华演出时间表</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-tabs">
+                <li><a href="#day1" class="active" data-day="2025-05-17">5月17日 星期六</a></li>
+                <li><a href="#day2" data-day="2025-05-18">5月18日 星期日</a></li>
+                <li><a href="#day3" data-day="2025-05-19">5月19日 星期一</a></li>
+            </ul>
+            <div class="view-options">
+                <button id="timeline-view" class="active"><i class="fas fa-clock"></i> 时间轴视图</button>
+                <button id="stage-view"><i class="fas fa-map-marker-alt"></i> 舞台视图</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" id="artist-search" placeholder="搜索艺人...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="filters">
+            <select id="stage-filter">
+                <option value="all">所有舞台</option>
+                <option value="kineticFIELD">kineticFIELD</option>
+                <option value="cosmicMEADOW">cosmicMEADOW</option>
+                <option value="circuitGROUNDS">circuitGROUNDS</option>
+                <option value="neonGARDEN">neonGARDEN</option>
+                <option value="bassPOD">bassPOD</option>
+                <option value="wasteLAND">wasteLAND</option>
+                <option value="quantumVALLEY">quantumVALLEY</option>
+                <option value="stereoBLOOM">stereoBLOOM</option>
+                <option value="bionicJUNGLE">bionicJUNGLE</option>
+                <option value="ubuntu">ubuntu</option>
+                <option value="forestHOUSE">forestHOUSE</option>
+                <option value="beatboxARTCAR">beatboxARTCAR</option>
+                <option value="metaPHOENIX">metaPHOENIX</option>
+                <option value="yeeDCI">yeeDCI</option>
+                <option value="blacklightBAR">blacklightBAR</option>
+            </select>
+            <div class="time-range">
+                <span>时间范围: </span>
+                <select id="time-from">
+                    <option value="10:00">10:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="18:00">18:00</option>
+                </select>
+                <span>至</span>
+                <select id="time-to">
+                    <option value="12:00">12:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="21:30" selected>21:30</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="schedule-container">
+            <div id="timeline-container" class="active"></div>
+            <div id="stage-container"></div>
+        </div>
+    </main>
+
+    <div id="artist-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="artist-info">
+                <div class="artist-header">
+                    <img src="" alt="" class="artist-image">
+                    <h2 class="artist-name"></h2>
+                </div>
+                <div class="artist-details">
+                    <p class="artist-bio"></p>
+                    <div class="performance-info">
+                        <h3>演出信息</h3>
+                        <p class="performance-time"></p>
+                        <p class="performance-stage"></p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-link spotify"><i class="fab fa-spotify"></i></a>
+                        <a href="#" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="social-link facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>EDC Las Vegas 中国时区演出时间表 © 2025 xiaogang制作</p>
+        </div>
+    </footer>
+
+    <script src="artist-data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const music = document.getElementById('background-music');
+            const musicControl = document.getElementById('music-control');
+            const musicIcon = document.getElementById('music-icon');
+            let isPlaying = false;
+            
+            // 尝试在用户首次与页面交互时播放音乐
+            document.addEventListener('click', function() {
+                if (!isPlaying) {
+                    music.play().then(() => {
+                        isPlaying = true;
+                        musicIcon.classList.remove('fa-play');
+                        musicIcon.classList.add('fa-pause');
+                    }).catch(error => {
+                        console.error('自动播放失败:', error);
+                    });
+                }
+            }, { once: true });
+            
+            // 音乐控制按钮点击事件
+            musicControl.addEventListener('click', function() {
+                if (isPlaying) {
+                    music.pause();
+                    musicIcon.classList.remove('fa-pause');
+                    musicIcon.classList.add('fa-play');
+                } else {
+                    music.play().then(() => {
+                        musicIcon.classList.remove('fa-play');
+                        musicIcon.classList.add('fa-pause');
+                    }).catch(error => {
+                        console.error('播放失败:', error);
+                    });
+                }
+                isPlaying = !isPlaying;
+            });
+        });
+    </script>
+</body>
+</html> 
